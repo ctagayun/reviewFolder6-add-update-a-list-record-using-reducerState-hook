@@ -56,10 +56,19 @@ const listReducer = (state, action) =>{
      //WHIC IS TO ADD ITEM TO THE LIST
      case 'ADD_ITEM':
         console.log (`Adding Record.`)
-        //the following was sent by this code below: updateInitialList({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
+        //the following was sent by this original code below: 
+        // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
+        // updateInitialList(newList); //update the state value of the "initialList object" 
+        // setTitle('');  //reset the input box to null
+   
         return state.concat({ name: action.title, id: action.objectID }); //RETURNS A NEW STATE
 
      case 'DELETE_RECORD':
+        //the following was sent by this original code below: 
+        // const newList = updatedList.filter(
+        //    (story) => item.objectID !== story.objectID);
+        // updateInitialList(newList);
+
         console.log (`Deleting Record. ${action.type}`)
         return state.filter((story) => item.objectID !== story.objectID);
 
@@ -146,9 +155,12 @@ function App() {
     //for the params to useReducer hook: 
     //   const [updatedList, updateInitialList] = React.useReducer(listReducer, initialList );
     
-    //After this code is executed "updatedList" state will contain the added record
-    updateInitialList({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
+    //Original Code:
+    // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
+    //updateInitialList(newList); //update the state value of the "initialList object" 
 
+    //After the below  code is executed "updatedList" state will contain the added record
+    updateInitialList({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
     setTitle('');  //reset the input box to null
   };
   //Function to delete a a record from the initialList list
