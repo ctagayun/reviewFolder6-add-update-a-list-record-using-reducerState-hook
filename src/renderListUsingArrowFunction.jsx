@@ -31,7 +31,7 @@ const RenderListUsingArrowFunction = ({list, onRemoveItem}) => {
                       key={item.objectID}
                       objectID={item.objectID} 
                       item={item}
-                      onRemoveItem = {onRemoveItem} //contains the onRemoveItem handler
+                      onRemoveItem = {onRemoveItem}  
                   />
               ))}
             </tbody>

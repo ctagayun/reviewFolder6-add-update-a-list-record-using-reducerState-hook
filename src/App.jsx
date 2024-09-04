@@ -53,25 +53,13 @@ const initialList = [
 const listReducer = (state, action) =>{
    switch (action.type) {
      //based on the action type implement the business logic
-     //WHIC IS TO ADD ITEM TO THE LIST
      case 'ADD_ITEM':
         console.log (`Adding Record. ${action.title} ${action.objectID}`)
-
-        //the following was sent by this original code below: 
-        // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
-        // updateInitialList(newList); //update the state value of the "initialList object" 
-        // setTitle('');  //reset the input box to null
-       
-        return state.concat({ title: action.title, id: action.objectID }); //RETURNS A NEW STATE
-
+        return state.concat({ title: action.title, id: action.objectID }); //return a new state
      case 'DELETE_ITEM':
-        //the following was sent by this original code below: 
-        // const newList = updatedList.filter(
-        //    (story) => item.objectID !== story.objectID);
-        // updateInitialList(newList);
-
-        console.log (`Deleting Record. ${action.type}`)
-        return state.filter((story) => item.objectID !== story.objectID);
+        console.log (`Delete  Action Type is = ${action.type}`)
+        console.log (`Deleting Record = ${action.type}`)
+        return state.filter((item) => item.objectID !== item.objectID); //return a new state
 
      default:
         console.log(`Unhandled TYPE: ${action.type}`);
@@ -80,33 +68,6 @@ const listReducer = (state, action) =>{
 
 };
 
- //Create a custom hook called "useStorageState". We will use two hooks 
-  //to create it:
-  //    1. useState
-  //    2. useEffect 
-
-  //The purpose of this custom hook is to save and fetch from the localtorage
-  //the values that were inputted in the search box.
-  //The actual return value of our custom hook will be displayed in the 
-  //search box.
-
-  const useStorageState = (searchKeyParam, deafaultStateParam) => {
-    const [theState, stateSetter] = React.useState(
-       localStorage.getItem(searchKeyParam) || deafaultStateParam //provides an initial value to the hook.
-    );
-
-    //https://react.dev/reference/react/useEffect#useeffect
-    //Since the key comes from outside, the custom hook assumes that it could change,
-    //so it needs to be included in the dependency array of the useEffect hook as well.
-    React.useEffect(() => {
-        localStorage.setItem(searchKeyParam, theState);
-       },
-       [theState, stateSetter] );
-
-    //Custom hooks return values are returned as an array
-    return [theState, stateSetter]; 
-
- } //EOF create custom hook
 
 //Declaration of App component
 function App() {
@@ -119,50 +80,27 @@ function App() {
   let searchKey= 'search';
   let defaultState = 'React'
 
-  //now call our custom hook useLocalStorage to initialize our state 
-  //called "searchTerm". The actual return value of our custom hook is:
-  //return [theState, stateSetter]. But we can rename it. In this case
-  //searchTerm, setSearchTerm respectively
-  const [searchTerm, setSearchTerm] = useStorageState(searchKey, defaultState)
-
+  
   //Next make the list "initialList" stateful using reducer hook 
   //         "listReducer" is the reducer function
   //         "initialList" is the list which is used to initialize "listData" first time in
   //                
   const [listData, dispatchListData] = React.useReducer(listReducer, initialList );
 
-  //Before we can add an item, we need to track the "input field's" state, 
-  //because without the value from the input field, we don't have any text 
-  //to give the item which we want to add to our list. So let's add some 
-  //state management to this first:
+  //Create a state for the field that will be used to input the new item
   const [title, setTitle] = React.useState('');
 
-  //Track changes to the input text box
+  //Track changes to the add input text box
   const handleChange = (event) => {
     console.log(`Value of title input field: ${event.target.value} `)
     setTitle(event.target.value);
- };
+   };
 
-  //Function to handle add a record
-  //Next, whenever someone clicks the Add button in renderListUsingArrowFunction.jsx , 
-  //we can add the title entered into the input field as a new item to the list:
-
-
-  const handleAddRecord = () => {
+  const handleAdd = () => {
     console.log(`Item being Added: ${title}`);
-
-    //updateInitialList is the reducer hook state updater. it dispatches 
-    //the below message to the target reducerHook  function called "listReducer". See below
-    //for the params to useReducer hook: 
-    //   const [updatedList, updateInitialList] = React.useReducer(listReducer, initialList );
-    
-    //Original Code:
-    // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
-    //updateInitialList(newList); //update the state value of the "initialList object" 
 
     //After the below  code is executed "listData" state will contain the added record
     dispatchListData({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
-    console.log(`Updated list = ${listData}`);
     setTitle('');  //reset the input box to null
   };
 
@@ -180,47 +118,25 @@ function App() {
     dispatchListData({type: 'DELETE_ITEM', title, objectID: uuidv4()}); 
   }
 
-  const searchedList = listData.filter((story) =>
-     story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value); //update state hook variable in this case "searchTerm"
-  }
-
+ 
   return (
     <div>
        <h1> 
           {welcome.greeting} {welcome.title}
       </h1>
-       
-       
-       {/* searchTerm is the return value from useStorageState custom hook. */}
-      <Search id="search" value={searchTerm}  isFocused  onInputChange={handleSearch} >
-         <strong>Search:</strong>
-      </Search>
-
+    
        <hr/>
-       {/* <div>
-         <input type="text" value={title} onChange={handleChange} />
-           <button type="button" className="btn btn-primary" onClick={handleAddRecord}>
-             Add
-           </button>
-        </div> */}
 
      <AddItem
         name={title}
         onChange={handleChange}
-        handleAddRecord={handleAddRecord}
+        onAdd={handleAdd}
       />
 
        {/*We have made the input field "title" a controlled element, because 
          it receives its internal value from React's state now. */}
-       <RenderListUsingArrowFunction list={searchedList} 
-                             onRemoveItem={handleDeleteRecord}
-                             title={title} />
-
-    
+       <RenderListUsingArrowFunction list={listData} 
+                                     onRemoveItem={handleDeleteRecord} />
         
     </div>
   )

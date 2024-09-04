@@ -28,7 +28,7 @@ import * as React from 'react';
 
 //The second and more popular solution is to use an inline arrow function, which allows
 //us to sneak in arguments like the item:
-const Item = ({item, onRemoveItem, handleAdd, onChange }) => (
+const Item = ({item, onRemoveItem }) => (
     <tr>
      <td>{item.title}</td>
      {/* <td>{item.url}</td>
@@ -37,7 +37,6 @@ const Item = ({item, onRemoveItem, handleAdd, onChange }) => (
      <td>{item.points}</td> */}
      <td>{item.objectID}</td>
      <span>
-      {/* <button type="button" onClick={onRemoveItem.bind(null, item)}> */}
         <button className="btn btn-primary" type="button" onClick={() => onRemoveItem(item)}>
           Delete
         </button>
