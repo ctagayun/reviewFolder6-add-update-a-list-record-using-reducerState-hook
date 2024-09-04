@@ -81,9 +81,13 @@ function App() {
   let defaultState = 'React'
 
   
-  //Next make the list "initialList" stateful using reducer hook 
-  //         "listReducer" is the reducer function
-  //         "initialList" is the list which is used to initialize "listData" first time in
+  //This hook returns as an array :
+  //     1. a state in this case "listData"
+  //     2. a dispatch function in this case "dispatchListData" 
+  //which we conveniently access again via array destructuring. 
+  // The parameters in this case are:
+  //     "listReducer" is the reducer function
+  //     "initialList" is the list which is used to initialize "listData" first time in
   //                
   const [listData, dispatchListData] = React.useReducer(listReducer, initialList );
 
@@ -126,7 +130,6 @@ function App() {
       </h1>
     
        <hr/>
-
      <AddItem
         name={title}
         onChange={handleChange}
