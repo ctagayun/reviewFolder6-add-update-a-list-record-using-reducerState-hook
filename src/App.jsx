@@ -55,15 +55,16 @@ const listReducer = (state, action) =>{
      //based on the action type implement the business logic
      //WHIC IS TO ADD ITEM TO THE LIST
      case 'ADD_ITEM':
-        console.log (`Adding Record.`)
+        console.log (`Adding Record. ${action.title} ${action.objectID}`)
+
         //the following was sent by this original code below: 
         // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
         // updateInitialList(newList); //update the state value of the "initialList object" 
         // setTitle('');  //reset the input box to null
-   
-        return state.concat({ name: action.title, id: action.objectID }); //RETURNS A NEW STATE
+       
+        return state.concat({ title: action.title, id: action.objectID }); //RETURNS A NEW STATE
 
-     case 'DELETE_RECORD':
+     case 'DELETE_ITEM':
         //the following was sent by this original code below: 
         // const newList = updatedList.filter(
         //    (story) => item.objectID !== story.objectID);
@@ -126,9 +127,9 @@ function App() {
 
   //Next make the list "initialList" stateful using reducer hook 
   //         "listReducer" is the reducer function
-  //         "initialList" is the list which is used to initialize "updatedList" first time in
+  //         "initialList" is the list which is used to initialize "listData" first time in
   //                
-  const [updatedList, updateInitialList] = React.useReducer(listReducer, initialList );
+  const [listData, dispatchListData] = React.useReducer(listReducer, initialList );
 
   //Before we can add an item, we need to track the "input field's" state, 
   //because without the value from the input field, we don't have any text 
@@ -159,10 +160,12 @@ function App() {
     // const newList = updatedList.concat({ title, objectID: uuidv4() }); 
     //updateInitialList(newList); //update the state value of the "initialList object" 
 
-    //After the below  code is executed "updatedList" state will contain the added record
-    updateInitialList({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
+    //After the below  code is executed "listData" state will contain the added record
+    dispatchListData({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
+    console.log(`Updated list = ${listData}`);
     setTitle('');  //reset the input box to null
   };
+
   //Function to delete a a record from the initialList list
   // const handleDeleteRecord = (item) => {
   //   console.log(`Item being deleted =  ${item.objectID} ${item.author}`);
@@ -174,11 +177,11 @@ function App() {
 
   const handleDeleteRecord = (item) => {
     console.log(`Item being deleted =  ${item.objectID} ${item.author}`);
-    updateInitialList({type: 'DELETE_ITEM', title, objectID: uuidv4()}); 
+    dispatchListData({type: 'DELETE_ITEM', title, objectID: uuidv4()}); 
   }
 
-  const searchedList = updatedList.filter((story) =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const searchedList = listData.filter((story) =>
+     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearch = (event) => {
