@@ -54,8 +54,8 @@ const listReducer = (state, action) =>{
    switch (action.type) {
      //based on the action type implement the business logic
      case 'ADD_ITEM':
-        console.log (`Adding Record. ${action.title} ${action.objectID}`)
-        return state.concat({ title: action.title, id: action.objectID }); //return a new state
+       // console.log (`Adding Record. ${action.title} ${action.objectID}`)
+        return state.concat({ title: action.title, objectID: action.objectID }); //return a new state
      case 'DELETE_ITEM':
         console.log (`Delete  Action Type is = ${action.type}`)
         console.log (`Deleting Record = ${action.type}`)
@@ -118,7 +118,7 @@ function App() {
   // };
 
   const handleDeleteRecord = (item) => {
-    console.log(`Item being deleted =  ${item.objectID} ${item.author}`);
+    console.log(`Item being deleted =  ${item.objectID} ${item.title}`);
     dispatchListData({type: 'DELETE_ITEM', title, objectID: uuidv4()}); 
   }
 
