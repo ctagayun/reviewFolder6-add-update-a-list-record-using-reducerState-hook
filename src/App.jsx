@@ -94,8 +94,9 @@ const listReducer = (state, action) =>{
         console.log (`Delete  Action Type in the reducer is = ${action.type}`)
         console.log (`Item to be deleted by the reducer is ${action.payload.objectID}`)
 
-        //Return a new state but filter the state first. In this case objectID. 
-        //Filter generates a new array from the 'state' an call it "story"
+        //Return a new state but filter the state first. This means include 
+        //include only those records with id not equal to the passed in objectID.
+        //Filter generates a new array from the 'state' and call it "story"
         return state.filter(   //return a new state (C)
            (story) => action.payload.objectID !== story.objectID  
           );
