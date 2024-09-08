@@ -80,16 +80,18 @@ const initialList = [
 //   3. Based on these two arguments the reducer always returns 
 //     a new state
 
-
+//FYI: the "action" was passed in with the property: payload: with value "item"
 const listReducer = (state, action) =>{
    switch (action.type) { //(A)
      //based on the action type implement the business logic
      case 'ADD_ITEM':
-       // console.log (`Adding Record. ${action.title} ${action.objectID}`)
+        //the action in this use case was passed the properties: 
+        //     "title" and property called objectID with a value of uuidv4()
         return state.concat({ title: action.title, objectID: action.objectID }); //return a new state
     
         case 'DELETE_ITEM':
-        console.log (`Delete  Action Type is = ${action.type}`)
+        //FYI: the "action" that  was passed in has a property: payload: with value "item"
+        console.log (`Delete  Action Type in the reducer is = ${action.type}`)
         console.log (`Item to be deleted by the reducer is ${action.payload.objectID}`)
 
         //Return a new state but filter the state first. In this case objectID. 
@@ -174,6 +176,9 @@ function App() {
   const handleAdd = () => {
     console.log(`Item being Added: ${title}`);
     //After the below  code is executed "listData" state will contain the added record
+    //The action in this use case was passed the following values and propeties:
+    //        "title" 
+    //        "objectID" with a value of uuidv4()
     dispatchListData({type: 'ADD_ITEM', title, objectID: uuidv4()}); 
     setTitle('');  //reset the input box to null
   };
@@ -181,6 +186,7 @@ function App() {
  
   const handleDeleteRecord = (item) => {
     console.log(`Item being deleted =  ${item.objectID} ${item.title}`);
+    //Note: The "action" is being passed a property called "payload" with a value of "item"
     dispatchListData({type: 'DELETE_ITEM', payload: item,}); 
   }
 
